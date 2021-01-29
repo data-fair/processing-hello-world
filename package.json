@@ -1,0 +1,29 @@
+{
+  "name": "@koumoul/data-fair-processings-hello-world",
+  "version": "0.0.0",
+  "description": "Minimal plugin for data-fair-processings. Create one-line datasets on demand.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint --ext js,vue --ignore-path .gitignore .",
+    "lint-fix": "eslint --ext js,vue --ignore-path .gitignore --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koumoul-dev/data-fair-processings-hello-world.git"
+  },
+  "keywords": [
+    "data-fair-processings-plugin"
+  ],
+  "author": "Alban Mouton <alban.mouton@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koumoul-dev/data-fair-processings-hello-world/issues"
+  },
+  "homepage": "https://github.com/koumoul-dev/data-fair-processings-hello-world#readme",
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "mocha": "^8.2.1",
+    "standard": "^16.0.3"
+  }
+}
