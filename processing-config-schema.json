@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "required": ["dataset", "message"],
+  "properties": {
+    "dataset": {
+      "type": "object",
+      "require": ["id", "title"],
+      "properties": {
+        "id": { "type": "string", "title": "Identifiant", "default": "hello-world" },
+        "title": { "type": "string", "title": "Titre", "default": "Hello world" },
+        "overwrite": { "type": "boolean", "title": "Surcharger un jeu existant", "default": false }
+      }
+    },
+    "message": { "type": "string", "title": "Message", "default": "world !" }
+  }
+}

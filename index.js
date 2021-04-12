@@ -1,27 +1,3 @@
-exports.pluginConfigSchema = async () => ({
-  type: 'object',
-  properties: {
-    defaultMessage: { type: 'string', title: 'Default message', default: 'Hello world' }
-  }
-})
-
-exports.processingConfigSchema = async (pluginConfig) => ({
-  type: 'object',
-  required: ['dataset', 'message'],
-  properties: {
-    dataset: {
-      type: 'object',
-      require: ['id', 'title'],
-      properties: {
-        id: { type: 'string', title: 'Identifiant', default: 'hello-world' },
-        title: { type: 'string', title: 'Titre', default: pluginConfig.defaultMessage },
-        overwrite: { type: 'boolean', title: 'Surcharger un jeu existant', default: false }
-      }
-    },
-    message: { type: 'string', title: 'Message', default: pluginConfig.defaultMessage }
-  }
-})
-
 const datasetSchema = [{ key: 'message', type: 'string' }]
 
 exports.run = async ({ pluginConfig, processingConfig, processingId, tmpDir, axios, log }) => {
@@ -63,7 +39,7 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, tmpDir, axi
 
   log.step('Écriture du message de bienvenue')
   await axios.put(`api/v1/datasets/${processingConfig.dataset.id}/lines/hello`, {
-    message: processingConfig.message
+    message: pluginConfig.pluginMessage + ' ' + processingConfig.message
   })
   log.info('1 ligne de donnée écrite')
 }
