@@ -1,6 +1,6 @@
 {
   "name": "@koumoul/data-fair-processings-hello-world",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Minimal plugin for data-fair-processings. Create one-line datasets on demand.",
   "main": "index.js",
   "scripts": {
