@@ -23,6 +23,13 @@ describe('Hello world processing', () => {
       baseURL: config.dataFairUrl,
       headers: { 'x-apiKey': config.dataFairAPIKey }
     })
+    // customize axios errors for shorter stack traces when a request fails
+    axiosInstance.interceptors.response.use(response => response, error => {
+      if (!error.response) return Promise.reject(error)
+      delete error.response.request
+      error.response.config = { method: error.response.config.method, url: error.response.config.url, data: error.response.config.data }
+      return Promise.reject(error.response)
+    })
     await helloWorld.run({
       pluginConfig: {
         pluginMessage: 'Hello'

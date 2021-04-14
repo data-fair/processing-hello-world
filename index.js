@@ -23,7 +23,7 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, tmpDir, axi
       schema: datasetSchema
     })
   } catch (err) {
-    if (!err.response || err.response.status !== 404) throw err
+    if (err.status !== 404) throw err
     log.info('le jeu de données n\'existe pas encore')
 
     log.step('Création du jeu de données')
