@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint --ext js,vue --ignore-path .gitignore .",
-    "lint-fix": "eslint --ext js,vue --ignore-path .gitignore --fix ."
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint-fix": "eslint --ignore-path .gitignore --fix ."
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "config": "^3.3.6",
     "eslint": "^7.18.0",
     "mocha": "^8.2.1",
+    "moment": "^2.29.1",
     "standard": "^16.0.3"
   }
 }

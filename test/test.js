@@ -2,6 +2,7 @@ process.env.NODE_ENV = 'test'
 const config = require('config')
 const axios = require('axios')
 const chalk = require('chalk')
+const moment = require('moment')
 const assert = require('assert').strict
 const helloWorld = require('../')
 
@@ -11,7 +12,7 @@ describe('Hello world processing', () => {
     assert.equal(schema.properties.pluginMessage.default, 'Hello')
   })
 
-  it('should expose a processing config schema builder for users', async () => {
+  it('should expose a processing config schema for users', async () => {
     const schema = require('../processing-config-schema.json')
     assert.equal(schema.properties.message.default, 'world !')
   })
@@ -40,11 +41,13 @@ describe('Hello world processing', () => {
       },
       axios: axiosInstance,
       log: {
-        step: (msg) => console.log(chalk.blue.bold.underline(msg)),
-        error: (msg, extra) => console.log(chalk.red.bold(msg), extra),
-        warning: (msg, extra) => console.log(chalk.red(msg), extra),
-        info: (msg, extra) => console.log(chalk.blue(msg), extra),
-        debug: (msg, extra) => console.log(msg, extra)
+        step: (msg) => console.log(chalk.blue.bold.underline(`[${moment().format('LTS')}] ${msg}`)),
+        error: (msg, extra) => console.log(chalk.red.bold(`[${moment().format('LTS')}] ${msg}`), extra),
+        warning: (msg, extra) => console.log(chalk.red(`[${moment().format('LTS')}] ${msg}`), extra),
+        info: (msg, extra) => console.log(chalk.blue(`[${moment().format('LTS')}] ${msg}`), extra),
+        debug: (msg, extra) => {
+          // console.log(`[${moment().format('LTS')}] ${msg}`, extra)
+        }
       }
     })
     const dataset = (await axiosInstance.get('api/v1/datasets/hello-world-test')).data
