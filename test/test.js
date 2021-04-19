@@ -31,7 +31,7 @@ describe('Hello world processing', () => {
       error.response.config = { method: error.response.config.method, url: error.response.config.url, data: error.response.config.data }
       return Promise.reject(error.response)
     })
-    await helloWorld.run({
+    const { processingConfigPatch } = await helloWorld.run({
       pluginConfig: {
         pluginMessage: 'Hello'
       },
@@ -50,6 +50,7 @@ describe('Hello world processing', () => {
         }
       }
     })
+    assert.equal(processingConfigPatch.nbRuns, 1)
     const dataset = (await axiosInstance.get('api/v1/datasets/hello-world-test')).data
     assert.equal(dataset.title, 'Hello world test')
     const lines = (await axiosInstance.get('api/v1/datasets/hello-world-test/lines')).data.results

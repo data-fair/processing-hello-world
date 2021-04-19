@@ -11,6 +11,12 @@
         "overwrite": { "type": "boolean", "title": "Surcharger un jeu existant", "default": false }
       }
     },
-    "message": { "type": "string", "title": "Message", "default": "world !" }
+    "message": { "type": "string", "title": "Message", "default": "world !" },
+    "nbRuns": {
+      "type": "integer",
+      "title": "Nombre d'exécutions",
+      "default": 0,
+      "readOnly": true
+    }
   }
 }

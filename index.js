@@ -42,4 +42,8 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, tmpDir, axi
     message: pluginConfig.pluginMessage + ' ' + processingConfig.message
   })
   await log.info('1 ligne de donnée écrite')
+
+  return {
+    processingConfigPatch: { nbRuns: (processingConfig.nbRuns || 0) + 1 }
+  }
 }
