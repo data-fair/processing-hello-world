@@ -1,6 +1,9 @@
 const datasetSchema = [{ key: 'message', type: 'string' }]
 
-exports.run = async ({ pluginConfig, processingConfig, processingId, tmpDir, axios, log }) => {
+// tell data-fair-processings not to persist the data directory for this processing
+exports.preserveDir = true
+
+exports.run = async ({ pluginConfig, processingConfig, processingId, dir, axios, log }) => {
   await log.step('Vérification du jeu de données')
   await log.info(`tentative de lecture du jeu ${processingConfig.dataset.id}`)
   try {
