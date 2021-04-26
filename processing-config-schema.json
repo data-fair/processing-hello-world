@@ -1,5 +1,6 @@
 {
   "type": "object",
+  "x-display": "tabs",
   "required": ["datasetMode", "message"],
   "allOf": [{
     "title": "Jeu de données",
@@ -7,7 +8,7 @@
       "title": "Créer un jeu de données",
       "required": ["dataset"],
       "properties": {
-        "datasetMode": { "type": "string", "const": "create" },
+        "datasetMode": { "type": "string", "const": "create", "title": "Action" },
         "dataset": {
           "type": "object",
           "required": ["title"],
