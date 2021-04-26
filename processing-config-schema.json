@@ -25,7 +25,7 @@
         "datasetMode": { "type": "string", "const": "update" },
         "dataset": {
           "type": "object",
-          "x-fromUrl": "api/v1/datasets?q={q}&select=id,title&{context.ownerFilter}",
+          "x-fromUrl": "{context.dataFairUrl}/api/v1/datasets?q={q}&select=id,title&{context.ownerFilter}",
           "x-itemsProp": "results",
           "x-itemTitle": "title",
           "x-itemKey": "href",
