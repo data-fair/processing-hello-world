@@ -13,7 +13,7 @@
           "type": "object",
           "required": ["title"],
           "properties": {
-            "id": {"type": "string", "title": "Identifiant (laissez vide pour utiliser un identifiant calculé)"},
+            "id": {"type": "string", "title": "Identifiant (laissez vide pour calculter un identifiant à partir du titre)"},
             "title": {"type": "string", "title": "Titre", "default": "Hello world "}
           }
         }
