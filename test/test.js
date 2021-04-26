@@ -14,11 +14,11 @@ describe('Hello world processing', () => {
 
   it('should expose a processing config schema for users', async () => {
     const schema = require('../processing-config-schema.json')
-    assert.equal(schema.properties.message.default, 'world !')
+    assert.equal(schema.type, 'object')
   })
 
   it('should run a task', async function () {
-    this.timeout(10000)
+    this.timeout(20000)
 
     const axiosInstance = axios.create({
       baseURL: config.dataFairUrl,
@@ -31,31 +31,34 @@ describe('Hello world processing', () => {
       error.response.config = { method: error.response.config.method, url: error.response.config.url, data: error.response.config.data }
       return Promise.reject(error.response)
     })
-    const { processingConfigPatch } = await helloWorld.run({
-      pluginConfig: {
-        pluginMessage: 'Hello'
-      },
-      processingConfig: {
-        dataset: { id: 'hello-world-test', title: 'Hello world test', overwrite: false },
-        message: 'world test !'
-      },
-      axios: axiosInstance,
-      log: {
-        step: (msg) => console.log(chalk.blue.bold.underline(`[${moment().format('LTS')}] ${msg}`)),
-        error: (msg, extra) => console.log(chalk.red.bold(`[${moment().format('LTS')}] ${msg}`), extra),
-        warning: (msg, extra) => console.log(chalk.red(`[${moment().format('LTS')}] ${msg}`), extra),
-        info: (msg, extra) => console.log(chalk.blue(`[${moment().format('LTS')}] ${msg}`), extra),
-        debug: (msg, extra) => {
-          // console.log(`[${moment().format('LTS')}] ${msg}`, extra)
-        }
+    const pluginConfig = { pluginMessage: 'Hello' }
+    const processingConfig = {
+      datasetMode: 'create',
+      dataset: { title: 'Hello world test' },
+      message: 'world test !'
+    }
+    const log = {
+      step: (msg) => console.log(chalk.blue.bold.underline(`[${moment().format('LTS')}] ${msg}`)),
+      error: (msg, extra) => console.log(chalk.red.bold(`[${moment().format('LTS')}] ${msg}`), extra),
+      warning: (msg, extra) => console.log(chalk.red(`[${moment().format('LTS')}] ${msg}`), extra),
+      info: (msg, extra) => console.log(chalk.blue(`[${moment().format('LTS')}] ${msg}`), extra),
+      debug: (msg, extra) => {
+        // console.log(`[${moment().format('LTS')}] ${msg}`, extra)
       }
-    })
-    assert.equal(processingConfigPatch.nbRuns, 1)
-    const dataset = (await axiosInstance.get('api/v1/datasets/hello-world-test')).data
-    assert.equal(dataset.title, 'Hello world test')
-    const lines = (await axiosInstance.get('api/v1/datasets/hello-world-test/lines')).data.results
-    assert.equal(lines.length, 1)
-    assert.equal(lines[0]._id, 'hello')
-    assert.equal(lines[0].message, 'Hello world test !')
+    }
+    const patchConfig = async (patch) => {
+      console.log('received config patch', patch)
+      Object.assign(processingConfig, patch)
+    }
+    await helloWorld.run({ pluginConfig, processingConfig, axios: axiosInstance, log, patchConfig })
+    assert.equal(processingConfig.datasetMode, 'update')
+    assert.equal(processingConfig.dataset.title, 'Hello world test')
+    const datasetId = processingConfig.dataset.id
+    assert.ok(processingConfig.dataset.id.startsWith('hello-world-test'))
+
+    // another execution should update the dataset, not create it
+    // await new Promise(resolve => setTimeout(resolve, 4000))
+    await helloWorld.run({ pluginConfig, processingConfig, axios: axiosInstance, log, patchConfig })
+    assert.equal(processingConfig.dataset.id, datasetId)
   })
 })

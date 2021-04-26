@@ -1,22 +1,44 @@
 {
   "type": "object",
-  "required": ["dataset", "message"],
-  "properties": {
-    "dataset": {
-      "type": "object",
-      "require": ["id", "title"],
+  "required": ["datasetMode", "message"],
+  "allOf": [{
+    "title": "Jeu de données",
+    "oneOf": [{
+      "title": "Créer un jeu de données",
+      "required": ["dataset"],
       "properties": {
-        "id": { "type": "string", "title": "Identifiant", "default": "hello-world" },
-        "title": { "type": "string", "title": "Titre", "default": "Hello world" },
-        "overwrite": { "type": "boolean", "title": "Surcharger un jeu existant", "default": false }
+        "datasetMode": { "type": "string", "const": "create" },
+        "dataset": {
+          "type": "object",
+          "required": ["title"],
+          "properties": {
+            "id": {"type": "string", "title": "Identifiant (laissez vide pour utiliser un identifiant calculé)"},
+            "title": {"type": "string", "title": "Titre", "default": "Hello world "}
+          }
+        }
       }
-    },
-    "message": { "type": "string", "title": "Message", "default": "world !" },
-    "nbRuns": {
-      "type": "integer",
-      "title": "Nombre d'exécutions",
-      "default": 0,
-      "readOnly": true
+    }, {
+      "title": "Mettre à jour un jeu de données",
+      "required": ["dataset"],
+      "properties": {
+        "datasetMode": { "type": "string", "const": "update" },
+        "dataset": {
+          "type": "object",
+          "x-fromUrl": "api/v1/datasets?q={q}&select=id,title&{context.ownerFilter}",
+          "x-itemsProp": "results",
+          "x-itemTitle": "title",
+          "x-itemKey": "href",
+          "properties": {
+            "id": {"type": "string", "title": "Identifiant"},
+            "title": {"type": "string", "title": "Titre"}
+          }
+        }
+      }
+    }]
+  }, {
+    "title": "Contenu",
+    "properties": {
+      "message": { "type": "string", "title": "Message", "default": "world !" }
     }
-  }
+  }]
 }
