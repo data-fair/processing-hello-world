@@ -54,7 +54,7 @@ describe('Hello world processing', () => {
     assert.equal(processingConfig.datasetMode, 'update')
     assert.equal(processingConfig.dataset.title, 'Hello world test')
     const datasetId = processingConfig.dataset.id
-    assert.ok(processingConfig.dataset.id.startsWith('hello-world-test'))
+    assert.ok(datasetId.startsWith('hello-world-test'))
 
     // another execution should update the dataset, not create it
     // await new Promise(resolve => setTimeout(resolve, 4000))

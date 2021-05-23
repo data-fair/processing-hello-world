@@ -13,7 +13,7 @@
           "type": "object",
           "required": ["title"],
           "properties": {
-            "id": {"type": "string", "title": "Identifiant (laissez vide pour calculter un identifiant à partir du titre)"},
+            "id": {"type": "string", "title": "Identifiant (laissez vide pour calculer un identifiant à partir du titre)"},
             "title": {"type": "string", "title": "Titre", "default": "Hello world "}
           }
         }
@@ -28,7 +28,7 @@
           "x-fromUrl": "{context.dataFairUrl}/api/v1/datasets?q={q}&select=id,title&{context.ownerFilter}",
           "x-itemsProp": "results",
           "x-itemTitle": "title",
-          "x-itemKey": "href",
+          "x-itemKey": "id",
           "properties": {
             "id": {"type": "string", "title": "Identifiant"},
             "title": {"type": "string", "title": "Titre"}

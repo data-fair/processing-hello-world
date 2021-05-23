@@ -1,8 +1,5 @@
 const datasetSchema = [{ key: 'message', type: 'string' }]
 
-// tell data-fair-processings not to persist the data directory for this processing
-exports.preserveDir = true
-
 exports.run = async ({ pluginConfig, processingConfig, processingId, dir, axios, log, patchConfig }) => {
   let dataset
   if (processingConfig.datasetMode === 'create') {
