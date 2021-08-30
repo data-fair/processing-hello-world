@@ -1,5 +1,5 @@
 {
-  "name": "@koumoul/data-fair-processings-hello-world",
+  "name": "@data-fair/processing-hello-world",
   "version": "0.5.4",
   "description": "Minimal plugin for data-fair-processings. Create one-line datasets on demand.",
   "main": "index.js",
