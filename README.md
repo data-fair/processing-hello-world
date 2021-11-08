@@ -15,7 +15,7 @@ git push && git push --tags
 To publish a test version, use prerelease versioning with a "test" npm tag:
 
 ```
-npm version preminor --preid=beta --tag=test
-npm publish
+npm version preminor --preid=beta
+npm publish --tag=test
 git push && git push --tags
 ```
