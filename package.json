@@ -1,6 +1,6 @@
 {
   "name": "@data-fair/processing-hello-world",
-  "version": "0.7.0-alpha.0",
+  "version": "0.7.0",
   "description": "Minimal plugin for data-fair-processings. Create one-line datasets on demand.",
   "main": "index.js",
   "scripts": {
