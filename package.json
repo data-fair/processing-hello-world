@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koumoul-dev/data-fair-processings-hello-world.git"
+    "url": "git+https://github.com/data-fair/processing-hello-world.git"
   },
   "keywords": [
     "data-fair-processings-plugin"
@@ -18,9 +18,9 @@
   "author": "Alban Mouton <alban.mouton@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/koumoul-dev/data-fair-processings-hello-world/issues"
+    "url": "https://github.com/data-fair/processing-hello-world/issues"
   },
-  "homepage": "https://github.com/koumoul-dev/data-fair-processings-hello-world#readme",
+  "homepage": "https://github.com/data-fair/processingshello-world#readme",
   "devDependencies": {
     "axios": "^0.21.1",
     "chalk": "^4.1.0",
