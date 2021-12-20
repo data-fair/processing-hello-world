@@ -25,9 +25,11 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
 
   if (processingConfig.delay) {
     await log.info(`attend ${processingConfig.delay} seconde(s)`)
-    await new Promise(resolve => setTimeout(resolve, processingConfig.delay * 1000))
+    for (let i = 0; i < processingConfig.delay; i++) {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      if (stopped) return await log.error('interrompu')
+    }
   }
-  if (stopped) return await log.error('interrompu')
 
   await axios.put(`api/v1/datasets/${dataset.id}/lines/hello`, {
     message: pluginConfig.pluginMessage + ' ' + processingConfig.message
