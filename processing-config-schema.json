@@ -39,7 +39,8 @@
   }, {
     "title": "Contenu",
     "properties": {
-      "message": { "type": "string", "title": "Message", "default": "world !" }
+      "message": { "type": "string", "title": "Message", "default": "world !" },
+      "delay": { "type": "integer", "title": "Délai en secondes", "default": 1 }
     }
   }]
 }

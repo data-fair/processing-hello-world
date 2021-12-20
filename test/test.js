@@ -35,7 +35,8 @@ describe('Hello world processing', () => {
     const processingConfig = {
       datasetMode: 'create',
       dataset: { title: 'Hello world test' },
-      message: 'world test !'
+      message: 'world test !',
+      delay: 1
     }
     const log = {
       step: (msg) => console.log(chalk.blue.bold.underline(`[${moment().format('LTS')}] ${msg}`)),

@@ -1,6 +1,7 @@
 const datasetSchema = [{ key: 'message', type: 'string' }]
 
-exports.run = async ({ pluginConfig, processingConfig, processingId, dir, axios, log, patchConfig }) => {
+let stopped
+exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir, axios, log, patchConfig }) => {
   let dataset
   if (processingConfig.datasetMode === 'create') {
     await log.step('Création du jeu de données')
@@ -21,8 +22,19 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, axios,
   }
 
   await log.step('Écriture du message de bienvenue')
+
+  if (processingConfig.delay) {
+    await log.info(`attend ${processingConfig.delay} seconde(s)`)
+    await new Promise(resolve => setTimeout(resolve, processingConfig.delay * 1000))
+  }
+  if (stopped) return await log.error('interrompu')
+
   await axios.put(`api/v1/datasets/${dataset.id}/lines/hello`, {
     message: pluginConfig.pluginMessage + ' ' + processingConfig.message
   })
   await log.info('1 ligne de donnée écrite')
+}
+
+exports.stop = async () => {
+  stopped = true
 }

@@ -4,7 +4,7 @@ Minimal plugin for data-fair/processings. Create one-line datasets on demand.
 
 ## Release
 
-Plugins are fetched from the npm registry with a filter on keyword "data-fair-processings-plugin". So publishing a plugin is as simple as publishing the npm package:
+Processing plugins are fetched from the npm registry with a filter on keyword "data-fair-processings-plugin". So publishing a plugin is as simple as publishing the npm package:
 
 ```
 npm version minor
