@@ -7,7 +7,7 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
     await log.info(`attend ${processingConfig.delay} seconde(s)`)
     for (let i = 0; i < processingConfig.delay; i++) {
       await new Promise(resolve => setTimeout(resolve, 1000))
-      if (stopped) return await log.error('interrompu')
+      if (stopped && !processingConfig.ignoreStop) return await log.error('interrompu')
     }
   }
 
