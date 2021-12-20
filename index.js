@@ -39,4 +39,5 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
 
 exports.stop = async () => {
   stopped = true
+  await new Promise(resolve => setTimeout(resolve, 1000))
 }
