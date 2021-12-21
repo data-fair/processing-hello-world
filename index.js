@@ -1,13 +1,26 @@
 const datasetSchema = [{ key: 'message', type: 'string' }]
 
+// a global variable to manage interruption
 let stopped
+
+// main running method of the task
+// pluginConfig: an object matching the schema in plugin-config-schema.json
+// processingConfig: an object matching the schema in processing-config-schema.json
+// processingId: the id of the processing configuration in @data-fair/processings
+// dir: a persistent directory associated to the processing configuration
+// tmpDir: a temporary directory that will automatically destroyed after running
+// axios: an axios instance configured so that its base url is a data-fair instance and it sends proper credentials
+// log: contains async debug/info/warning/error methods to store a log on the processing run
+// patchConfig: async method accepting an object to be merged with the configuration
 exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir, axios, log, patchConfig }) => {
   if (processingConfig.delay) {
     await log.step('Application du délai')
     await log.info(`attend ${processingConfig.delay} seconde(s)`)
     for (let i = 0; i < processingConfig.delay; i++) {
       await new Promise(resolve => setTimeout(resolve, 1000))
-      if (stopped && !processingConfig.ignoreStop) return await log.error('interrompu')
+      if (stopped && !processingConfig.ignoreStop) {
+        return await log.warning('interrompu proprement pendant l\'attente')
+      }
     }
   }
 
@@ -37,7 +50,10 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
   await log.info('1 ligne de donnée écrite')
 }
 
+// used to manage interruption
+// not required but it is a good practice to prevent incoherent state a smuch as possible
+// the run method should finish shortly after calling stop, otherwise the process will be forcibly terminated
+// the grace period before force termination is 20 seconds
 exports.stop = async () => {
   stopped = true
-  await new Promise(resolve => setTimeout(resolve, 1000))
 }
