@@ -45,12 +45,21 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
     await log.info(`le jeu de donnée existe, id="${dataset.id}", title="${dataset.title}"`)
   }
 
+  await log.task('Tâche avec progression')
+  await log.progress('Tâche avec progression', 0, 100)
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  for (let i = 0; i < 100; i++) {
+    await new Promise(resolve => setTimeout(resolve, 100))
+    await log.progress('Tâche avec progression', i + 1, 100)
+  }
+
   await log.step('Écriture du message de bienvenue')
   await axios.put(`api/v1/datasets/${dataset.id}/lines/hello`, {
     message: pluginConfig.pluginMessage + ' ' + processingConfig.message
   })
   await log.info('1 ligne de donnée écrite')
   await ws.waitForJournal(dataset.id, 'finalize-end')
+  ws._ws.terminate()
 }
 
 // used to manage interruption
