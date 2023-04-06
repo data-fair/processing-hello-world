@@ -12,7 +12,7 @@ let stopped
 // axios: an axios instance configured so that its base url is a data-fair instance and it sends proper credentials
 // log: contains async debug/info/warning/error methods to store a log on the processing run
 // patchConfig: async method accepting an object to be merged with the configuration
-// waitForWSEvent: async method to wait for a message from a Web Socket topic of data-fair
+// ws: an event emitter to wait for some state changes coming through web socket from the data-fair server
 exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir, axios, log, patchConfig, ws }) => {
   if (processingConfig.delay) {
     await log.step('Application du délai')
@@ -41,7 +41,7 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
   } else if (processingConfig.datasetMode === 'update') {
     await log.step('Vérification du jeu de données')
     dataset = (await axios.get(`api/v1/datasets/${processingConfig.dataset.id}`)).data
-    if (!dataset) throw new Error(`le jeu de données n'existe pas, id${processingConfig.dataset.id}`)
+    if (!dataset) throw new Error(`le jeu de données n'existe pas, id="${processingConfig.dataset.id}"`)
     await log.info(`le jeu de donnée existe, id="${dataset.id}", title="${dataset.title}"`)
   }
 
@@ -59,7 +59,6 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
   })
   await log.info('1 ligne de donnée écrite')
   await ws.waitForJournal(dataset.id, 'finalize-end')
-  ws._ws.terminate()
 }
 
 // used to manage interruption
