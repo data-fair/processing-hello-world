@@ -13,7 +13,8 @@ let stopped
 // log: contains async debug/info/warning/error methods to store a log on the processing run
 // patchConfig: async method accepting an object to be merged with the configuration
 // ws: an event emitter to wait for some state changes coming through web socket from the data-fair server
-exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir, axios, log, patchConfig, ws }) => {
+// sendMail: an async function to send an email (see https://nodemailer.com/usage/#sending-mail)
+exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir, axios, log, patchConfig, ws, sendMail }) => {
   if (processingConfig.delay) {
     await log.step('Application du délai')
     await log.info(`attend ${processingConfig.delay} seconde(s)`)
@@ -23,6 +24,16 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
         return await log.warning('interrompu proprement pendant l\'attente')
       }
     }
+  }
+
+  if (processingConfig.email && processingConfig.email.to && processingConfig.email.from) {
+    await sendMail({
+      from: processingConfig.email.from,
+      to: processingConfig.email.to,
+      subject: 'Hello world processing !',
+      text: 'A test email',
+      attachments: [{ filename: 'test.txt', content: 'A test attachment' }]
+    })
   }
 
   let dataset
