@@ -27,6 +27,7 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
   }
 
   if (processingConfig.email && processingConfig.email.to && processingConfig.email.from) {
+    await log.step('Envoi d\'un mail de test')
     await sendMail({
       from: processingConfig.email.from,
       to: processingConfig.email.to,
