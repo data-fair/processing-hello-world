@@ -28,13 +28,15 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
 
   if (processingConfig.email && processingConfig.email.to && processingConfig.email.from) {
     await log.step('Envoi d\'un mail de test')
-    await sendMail({
+    const mail = {
       from: processingConfig.email.from,
       to: processingConfig.email.to,
       subject: 'Hello world processing !',
       text: 'A test email',
       attachments: [{ filename: 'test.txt', content: 'A test attachment' }]
-    })
+    }
+    await log.info('mail : ' + JSON.stringify(mail))
+    await sendMail(mail)
   }
 
   let dataset
