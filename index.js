@@ -25,6 +25,9 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
       }
     }
   }
+  if (processingConfig.throwError) {
+    throw new Error('erreur de test pendant l\'exécution du traitement')
+  }
 
   if (processingConfig.email && processingConfig.email.to && processingConfig.email.from) {
     await log.step('Envoi d\'un mail de test')

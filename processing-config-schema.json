@@ -41,7 +41,8 @@
     "properties": {
       "message": { "type": "string", "title": "Message", "default": "world !" },
       "delay": { "type": "integer", "title": "Délai en secondes (utilisé pour tester l'interruption de tâche)", "default": 1 },
-      "ignoreStop": {"type": "boolean", "title": "Ignorer l'instruction de stop (utilisé pour tester l'interruption brutale de tâche)", "default": false}
+      "ignoreStop": {"type": "boolean", "title": "Ignorer l'instruction de stop (utilisé pour tester l'interruption brutale de tâche)", "default": false},
+      "throwError": {"type": "boolean", "title": "Déclencher une erreur (utilisé pour tester la gestion des erreurs)", "default": false}
     }
   }, {
     "title": "Email",
