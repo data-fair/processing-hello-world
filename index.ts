@@ -9,7 +9,11 @@ let stopped = false
 /**
  * This is the main function of the plugin, triggerd by processings.
  */
-export const run = async ({ pluginConfig, processingConfig, secrets, processingId, dir, tmpDir, axios, log, patchConfig, ws, sendMail }: ProcessingContext<ProcessingConfig>) => {
+export const run = async (context: ProcessingContext<ProcessingConfig>) => {
+  const { pluginConfig, processingConfig, secrets, processingId, axios, log, patchConfig, ws, sendMail } = context
+  await log.step('Démarrage du traitement')
+  await log.info('Context (extra log):', context)
+
   if (processingConfig.delay) {
     await log.step('Application du délai')
     await log.info(`attend ${processingConfig.delay} seconde(s)`)
@@ -42,7 +46,6 @@ export const run = async ({ pluginConfig, processingConfig, secrets, processingI
   if (processingConfig.datasetMode === 'create') {
     await log.step('Création du jeu de données')
     dataset = (await axios.post('api/v1/datasets', {
-      id: processingConfig.dataset.id,
       title: processingConfig.dataset.title,
       description: secrets?.secretField ?? processingConfig.secretField ?? '',
       isRest: true,
