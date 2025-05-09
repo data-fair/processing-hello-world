@@ -27,6 +27,7 @@
   "devDependencies": {
     "@data-fair/lib-common-types": "^1.10.0",
     "@data-fair/lib-processing-dev": "^0.2.0",
+    "@data-fair/lib-types-builder": "^1.7.0",
     "@types/config": "^3.3.5",
     "@types/node": "^22.15.17",
     "config": "^3.3.12",
@@ -36,7 +37,9 @@
     "neostandard": "^0.12.1",
     "typescript": "^5.8.3"
   },
-  "dependencies": {
-    "@data-fair/lib-types-builder": "^1.7.0"
-  }
+  "files": [
+    "plugin-config-schema.json",
+    "processing-config-schema.json",
+    "./lib/**/*"
+  ]
 }
