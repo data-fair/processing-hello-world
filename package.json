@@ -2,11 +2,14 @@
   "name": "@data-fair/processing-hello-world",
   "version": "0.13.0",
   "description": "Minimal plugin for data-fair-processings. Create one-line datasets on demand.",
-  "main": "index.js",
+  "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "test": "mocha",
     "lint": "eslint --ignore-path .gitignore .",
-    "lint-fix": "eslint --ignore-path .gitignore --fix ."
+    "lint-fix": "eslint --ignore-path .gitignore --fix .",
+    "build-types": "export NODE_OPTIONS='--experimental-strip-types' && df-build-types ./",
+    "test-base": "NODE_ENV=test node --experimental-strip-types --test-force-exit --test-concurrency=1 --test --test-reporter=spec --test-reporter-destination=stdout",
+    "test": "npm run test-base test-it/*.ts"
   },
   "repository": {
     "type": "git",
@@ -22,10 +25,18 @@
   },
   "homepage": "https://github.com/data-fair/processing-hello-world#readme",
   "devDependencies": {
-    "@data-fair/processings-test-utils": "^0.6.0",
-    "config": "^3.3.6",
-    "eslint": "^7.18.0",
-    "mocha": "^8.2.1",
-    "standard": "^16.0.3"
+    "@data-fair/lib-common-types": "^1.10.0",
+    "@data-fair/lib-processing-dev": "^0.2.0",
+    "@types/config": "^3.3.5",
+    "@types/node": "^22.15.17",
+    "config": "^3.3.12",
+    "debug": "^4.4.0",
+    "eslint": "^9.26.0",
+    "husky": "^9.1.7",
+    "neostandard": "^0.12.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@data-fair/lib-types-builder": "^1.7.0"
   }
 }

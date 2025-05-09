@@ -1,59 +1,133 @@
 {
   "type": "object",
-  "x-display": "tabs",
-  "required": ["datasetMode", "message"],
-  "allOf": [{
-    "title": "Jeu de données",
-    "oneOf": [{
-      "title": "Créer un jeu de données",
-      "required": ["dataset"],
-      "properties": {
-        "datasetMode": { "type": "string", "const": "create", "title": "Action" },
+  "layout": "tabs",
+  "required": [
+    "datasetMode",
+    "message"
+  ],
+  "allOf": [
+    {
+      "title": "Jeu de données",
+      "default": {
+        "datasetMode": "create",
         "dataset": {
-          "type": "object",
-          "required": ["title"],
+          "id": "",
+          "title": "Hello world "
+        }
+      },
+      "oneOf": [
+        {
+          "title": "Créer un jeu de données",
+          "required": [
+            "dataset"
+          ],
           "properties": {
-            "id": {"type": "string", "title": "Identifiant (laissez vide pour calculer un identifiant à partir du titre)"},
-            "title": {"type": "string", "title": "Titre", "default": "Hello world "}
+            "datasetMode": {
+              "type": "string",
+              "const": "create",
+              "title": "Action"
+            },
+            "dataset": {
+              "type": "object",
+              "required": [
+                "title"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Identifiant (laissez vide pour calculer un identifiant à partir du titre)"
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Titre",
+                  "default": "Hello world "
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Mettre à jour un jeu de données",
+          "required": [
+            "dataset"
+          ],
+          "properties": {
+            "datasetMode": {
+              "type": "string",
+              "const": "update"
+            },
+            "dataset": {
+              "type": "object",
+              "title": "Jeu de données",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Identifiant"
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Titre"
+                }
+              },
+              "layout": {
+                "getItems": {
+                  "url": "{context.dataFairUrl}/api/v1/datasets?select=id,title&{context.ownerFilter}&raw=true",
+                  "qSearchParam": "q",
+                  "itemsResults": "results",
+                  "itemTitle": "item.title",
+                  "itemKey": "item.id"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Contenu",
+      "properties": {
+        "message": {
+          "type": "string",
+          "title": "Message",
+          "default": "world !"
+        },
+        "delay": {
+          "type": "integer",
+          "title": "Délai en secondes (utilisé pour tester l'interruption de tâche)",
+          "default": 1
+        },
+        "ignoreStop": {
+          "type": "boolean",
+          "title": "Ignorer l'instruction de stop (utilisé pour tester l'interruption brutale de tâche)",
+          "default": false
+        },
+        "throwError": {
+          "type": "boolean",
+          "title": "Déclencher une erreur (utilisé pour tester la gestion des erreurs)",
+          "default": false
+        },
+        "secretField": {
+          "type": "string",
+          "title": "Champ secret",
+          "description": "La valeur de ce champ est sauvegardé chiffré en base et n'est jamais renvoyé à l'utilisateur. Il peut être utilisé pour stocker des informations sensibles. Pour verrifier que le traitement ai accès à la valeur non chiffrée, elle est affiché dans la description du jeu de données."
+        }
+      }
+    },
+    {
+      "title": "Email",
+      "properties": {
+        "email": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            }
           }
         }
       }
-    }, {
-      "title": "Mettre à jour un jeu de données",
-      "required": ["dataset"],
-      "properties": {
-        "datasetMode": { "type": "string", "const": "update" },
-        "dataset": {
-          "type": "object",
-          "x-fromUrl": "{context.dataFairUrl}/api/v1/datasets?q={q}&select=id,title&{context.ownerFilter}",
-          "x-itemsProp": "results",
-          "x-itemTitle": "title",
-          "x-itemKey": "id",
-          "properties": {
-            "id": {"type": "string", "title": "Identifiant"},
-            "title": {"type": "string", "title": "Titre"}
-          }
-        }
-      }
-    }]
-  }, {
-    "title": "Contenu",
-    "properties": {
-      "message": { "type": "string", "title": "Message", "default": "world !" },
-      "delay": { "type": "integer", "title": "Délai en secondes (utilisé pour tester l'interruption de tâche)", "default": 1 },
-      "ignoreStop": {"type": "boolean", "title": "Ignorer l'instruction de stop (utilisé pour tester l'interruption brutale de tâche)", "default": false},
-      "throwError": {"type": "boolean", "title": "Déclencher une erreur (utilisé pour tester la gestion des erreurs)", "default": false}
     }
-  }, {
-    "title": "Email",
-    "properties": {
-      "email": {
-        "type": "object",
-        "properties": {
-          "from": { "type": "string" },
-          "to": { "type": "string" }
-        }
-      }
-    }
-  }]
+  ]
 }

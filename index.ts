@@ -1,20 +1,15 @@
+import type { ProcessingContext, PrepareFunction } from '@data-fair/lib-common-types/processings.js'
+import type { ProcessingConfig } from './types/processingConfig/index.ts'
+
 const datasetSchema = [{ key: 'message', type: 'string' }]
 
 // a global variable to manage interruption
-let stopped
+let stopped = false
 
-// main running method of the task
-// pluginConfig: an object matching the schema in plugin-config-schema.json
-// processingConfig: an object matching the schema in processing-config-schema.json
-// processingId: the id of the processing configuration in @data-fair/processings
-// dir: a persistent directory associated to the processing configuration
-// tmpDir: a temporary directory that will automatically destroyed after running
-// axios: an axios instance configured so that its base url is a data-fair instance and it sends proper credentials
-// log: contains async debug/info/warning/error methods to store a log on the processing run
-// patchConfig: async method accepting an object to be merged with the configuration
-// ws: an event emitter to wait for some state changes coming through web socket from the data-fair server
-// sendMail: an async function to send an email (see https://nodemailer.com/usage/#sending-mail)
-exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir, axios, log, patchConfig, ws, sendMail }) => {
+/**
+ * This is the main function of the plugin, triggerd by processings.
+ */
+export const run = async ({ pluginConfig, processingConfig, secrets, processingId, dir, tmpDir, axios, log, patchConfig, ws, sendMail }: ProcessingContext<ProcessingConfig>) => {
   if (processingConfig.delay) {
     await log.step('Application du délai')
     await log.info(`attend ${processingConfig.delay} seconde(s)`)
@@ -39,6 +34,7 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
       attachments: [{ filename: 'test.txt', content: 'A test attachment' }]
     }
     await log.info('mail : ' + JSON.stringify(mail))
+    // @ts-ignore they are maybe an types error in the lib-common-types
     await sendMail(mail)
   }
 
@@ -48,6 +44,7 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
     dataset = (await axios.post('api/v1/datasets', {
       id: processingConfig.dataset.id,
       title: processingConfig.dataset.title,
+      description: secrets?.secretField ?? processingConfig.secretField ?? '',
       isRest: true,
       schema: datasetSchema,
       extras: { processingId }
@@ -59,6 +56,12 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
     dataset = (await axios.get(`api/v1/datasets/${processingConfig.dataset.id}`)).data
     if (!dataset) throw new Error(`le jeu de données n'existe pas, id="${processingConfig.dataset.id}"`)
     await log.info(`le jeu de donnée existe, id="${dataset.id}", title="${dataset.title}"`)
+    if (secrets?.secretField) {
+      await log.step('Mise à jour du secret')
+      await axios.patch(`api/v1/datasets/${dataset.id}`, {
+        description: secrets.secretField
+      })
+    }
   }
 
   await log.task('Tâche avec progression')
@@ -77,10 +80,25 @@ exports.run = async ({ pluginConfig, processingConfig, processingId, dir, tmpDir
   await ws.waitForJournal(dataset.id, 'finalize-end')
 }
 
-// used to manage interruption
-// not required but it is a good practice to prevent incoherent state a smuch as possible
-// the run method should finish shortly after calling stop, otherwise the process will be forcibly terminated
-// the grace period before force termination is 20 seconds
-exports.stop = async () => {
-  stopped = true
+/**
+ * Used to manage interruption
+ * Thsi method is not required but it is a good practice to prevent incoherent state as much as possible
+ * The run method should finish shortly after calling stop, otherwise the process will be forcibly terminated
+ * The grace period before force termination is 20 seconds
+ */
+export const stop = async () => { stopped = true }
+
+export const prepare: PrepareFunction<ProcessingConfig> = async ({ processingConfig }) => {
+  const secrets: { secretField?: string } = {}
+
+  const secretField = processingConfig.secretField
+  if (secretField && secretField !== '********' && secretField !== '') {
+    secrets.secretField = secretField
+    processingConfig.secretField = '********'
+  }
+
+  return {
+    processingConfig,
+    secrets
+  }
 }
