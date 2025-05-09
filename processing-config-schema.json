@@ -109,7 +109,13 @@
         "secretField": {
           "type": "string",
           "title": "Champ secret",
-          "description": "La valeur de ce champ est sauvegardé chiffré en base et n'est jamais renvoyé à l'utilisateur. Il peut être utilisé pour stocker des informations sensibles. Pour verrifier que le traitement ai accès à la valeur non chiffrée, elle est affiché dans la description du jeu de données."
+          "description": "La valeur de ce champ est sauvegardé chiffré en base et n'est jamais renvoyé à l'utilisateur. Il peut être utilisé pour stocker des informations sensibles. Pour verrifier que le traitement ai accès à la valeur non chiffrée, elle est affiché dans la description du jeu de données.",
+          "layout": {
+            "props": {
+              "type": "password",
+              "autocomplete": "new-password"
+            }
+          }
         }
       }
     },

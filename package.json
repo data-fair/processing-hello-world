@@ -5,8 +5,8 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore .",
-    "lint-fix": "eslint --ignore-path .gitignore --fix .",
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix .",
     "build-types": "export NODE_OPTIONS='--experimental-strip-types' && df-build-types ./",
     "test-base": "NODE_ENV=test node --experimental-strip-types --test-force-exit --test-concurrency=1 --test --test-reporter=spec --test-reporter-destination=stdout",
     "test": "npm run test-base test-it/*.ts"
@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/data-fair/processing-hello-world#readme",
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@data-fair/lib-common-types": "^1.10.0",
     "@data-fair/lib-processing-dev": "^0.2.0",
     "@data-fair/lib-types-builder": "^1.7.0",
