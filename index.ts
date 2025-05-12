@@ -91,13 +91,13 @@ export const run = async (context: ProcessingContext<ProcessingConfig>) => {
  */
 export const stop = async () => { stopped = true }
 
-export const prepare: PrepareFunction<ProcessingConfig> = async ({ processingConfig }) => {
-  const secrets: { secretField?: string } = {}
-
+export const prepare: PrepareFunction<ProcessingConfig> = async ({ processingConfig, secrets }) => {
   const secretField = processingConfig.secretField
-  if (secretField && secretField !== '********' && secretField !== '') {
-    secrets.secretField = secretField
-    processingConfig.secretField = '********'
+
+  if (secretField && secretField !== '********') {
+    secrets.secretField = '********'
+  } else if (secrets?.secretField && secretField === '') {
+    delete secrets.secretField
   }
 
   return {
