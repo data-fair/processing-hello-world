@@ -95,7 +95,8 @@ export const prepare: PrepareFunction<ProcessingConfig> = async ({ processingCon
   const secretField = processingConfig.secretField
 
   if (secretField && secretField !== '********') {
-    secrets.secretField = '********'
+    secrets.secretField = secretField
+    processingConfig.secretField = '********'
   } else if (secrets?.secretField && secretField === '') {
     delete secrets.secretField
   }

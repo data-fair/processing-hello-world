@@ -44,7 +44,7 @@ describe('Hello world processing', () => {
       secretField: 'Texte secret'
     }
 
-    const prepareRes = await helloWorldPlugin.prepare({ processingConfig })
+    const prepareRes = await helloWorldPlugin.prepare({ processingConfig, secrets: { } })
     assert.ok(prepareRes.processingConfig)
     assert.equal(prepareRes.processingConfig.secretField, '********')
 
