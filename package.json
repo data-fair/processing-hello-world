@@ -27,7 +27,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@data-fair/lib-common-types": "^1.10.0",
+    "@data-fair/lib-common-types": "^1.10.1",
     "@data-fair/lib-processing-dev": "^0.2.0",
     "@data-fair/lib-types-builder": "^1.7.0",
     "@types/config": "^3.3.5",
