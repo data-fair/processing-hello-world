@@ -11,6 +11,10 @@
     "test-base": "NODE_ENV=test node --experimental-strip-types --test-force-exit --test-concurrency=1 --test --test-reporter=spec --test-reporter-destination=stdout",
     "test": "npm run test-base test-it/*.ts"
   },
+  "imports": {
+    "#config": "./lib/config.ts",
+    "#types/*": "./types/*"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/data-fair/processing-hello-world.git"
@@ -30,14 +34,13 @@
     "@data-fair/lib-common-types": "^1.10.1",
     "@data-fair/lib-processing-dev": "^0.2.0",
     "@data-fair/lib-types-builder": "^1.7.0",
-    "@types/config": "^3.3.5",
-    "@types/node": "^22.15.17",
-    "config": "^3.3.12",
+    "config": "^4.4.1",
     "debug": "^4.4.0",
     "eslint": "^9.26.0",
     "husky": "^9.1.7",
     "neostandard": "^0.12.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "ws": "^8.19.0"
   },
   "files": [
     "plugin-config-schema.json",

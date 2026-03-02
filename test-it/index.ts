@@ -1,6 +1,6 @@
 import type { ProcessingConfig } from '../types/processingConfig/index.ts'
 
-import config from 'config'
+import config from '#config'
 import { strict as assert } from 'node:assert'
 import { it, describe } from 'node:test'
 import testUtils from '@data-fair/lib-processing-dev/tests-utils.js'
@@ -10,10 +10,10 @@ import pluginConfigSchema from '../plugin-config-schema.json' with { type: 'json
 import processingConfigSchema from '../processing-config-schema.json' with { type: 'json' }
 
 describe('Hello world processing', () => {
+  // Each plugins should expose a plugin config schema and a processing config schema
   it('should expose a plugin config schema for super admins', async () => {
     assert.equal(pluginConfigSchema.properties.pluginMessage.default, 'Hello')
   })
-
   it('should expose a processing config schema for users', async () => {
     assert.equal(processingConfigSchema.type, 'object')
   })

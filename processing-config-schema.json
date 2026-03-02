@@ -18,9 +18,7 @@
       "oneOf": [
         {
           "title": "Créer un jeu de données",
-          "required": [
-            "dataset"
-          ],
+          "required": ["dataset"],
           "properties": {
             "datasetMode": {
               "type": "string",
@@ -44,9 +42,7 @@
         },
         {
           "title": "Mettre à jour un jeu de données",
-          "required": [
-            "dataset"
-          ],
+          "required": ["dataset"],
           "properties": {
             "datasetMode": {
               "type": "string",
@@ -67,7 +63,7 @@
               },
               "layout": {
                 "getItems": {
-                  "url": "{context.dataFairUrl}/api/v1/datasets?select=id,title&{context.ownerFilter}&raw=true",
+                  "url": "${context.dataFairUrl}/api/v1/datasets?select=id,title&${context.ownerFilter}&raw=true",
                   "qSearchParam": "q",
                   "itemsResults": "results",
                   "itemTitle": "item.title",
@@ -80,7 +76,7 @@
       ]
     },
     {
-      "title": "Contenu",
+      "title": "Options de tests",
       "properties": {
         "message": {
           "type": "string",
@@ -92,26 +88,27 @@
           "title": "Délai en secondes (utilisé pour tester l'interruption de tâche)",
           "default": 1
         },
-        "ignoreStop": {
-          "type": "boolean",
-          "title": "Ignorer l'instruction de stop (utilisé pour tester l'interruption brutale de tâche)",
-          "default": false
-        },
-        "throwError": {
-          "type": "boolean",
-          "title": "Déclencher une erreur (utilisé pour tester la gestion des erreurs)",
-          "default": false
-        },
         "secretField": {
           "type": "string",
           "title": "Champ secret",
-          "description": "La valeur de ce champ est sauvegardé chiffré en base et n'est jamais renvoyé à l'utilisateur. Il peut être utilisé pour stocker des informations sensibles. Pour verrifier que le traitement ai accès à la valeur non chiffrée, elle est affiché dans la description du jeu de données.",
+          "description": "La valeur de ce champ est sauvegardé chiffré en base et n'est jamais renvoyé à l'utilisateur. Il peut être utilisé pour stocker des informations sensibles. Pour vérifier que le traitement ai bien accès à la valeur non chiffrée, elle est affiché dans la description du jeu de données. (Utilisé pour tester le chiffrement de données sensibles)",
           "layout": {
             "props": {
               "type": "password",
-              "autocomplete": "new-password"
+              "autocomplete": "suppress"
             }
           }
+        },
+        "ignoreStop": {
+          "type": "boolean",
+          "title": "Ignorer l'instruction de stop (utilisé pour tester l'interruption brutale de tâche)"        },
+        "throwError": {
+          "type": "boolean",
+          "title": "Déclencher une erreur (utilisé pour tester la gestion des erreurs)"
+        },
+        "deleteOnComplete": {
+          "type": "boolean",
+          "title": "Supprimer cet execution une fois terminée (utilisé pour tester l'auto suppression)"
         }
       }
     },
