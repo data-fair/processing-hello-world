@@ -1,4 +1,4 @@
-import type { PrepareFunction } from '@data-fair/lib-common-types/processings.js'
+import type { PrepareFunction, RunFunction } from '@data-fair/lib-common-types/processings.js'
 import type { ProcessingConfig } from './types/processingConfig/index.ts'
 
 /**
@@ -16,7 +16,7 @@ export const prepare: PrepareFunction<ProcessingConfig> = async (context) => {
  * Function to execute the processing (triggered when the processing is started).
  * This is the main function of the plugin where the business logic is implemented.
  */
-export const run = async (context: Parameters<typeof import('./lib/execute.ts').run>[0]) => {
+export const run: RunFunction<ProcessingConfig> = async (context) => {
   const { run } = await import('./lib/execute.ts')
   return run(context)
 }

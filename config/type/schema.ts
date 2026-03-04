@@ -1,6 +1,6 @@
 export default {
-  $id: 'https://github.com/data-fair/processings-rss/config',
-  'x-exports': ['types'],
+  $id: 'https://github.com/data-fair/processings-hello-world/config',
+  'x-exports': ['types', 'validate'],
   type: 'object',
   title: 'Config',
   additionalProperties: false,

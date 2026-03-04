@@ -46,5 +46,9 @@
     "plugin-config-schema.json",
     "processing-config-schema.json",
     "./lib/**/*"
-  ]
+  ],
+  "relativeDependencies": {
+    "@data-fair/lib-common-types": "../../lib/packages/common-types",
+    "@data-fair/lib-processing-dev": "../../lib/packages/processing-dev"
+  }
 }

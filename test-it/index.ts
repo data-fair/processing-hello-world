@@ -27,7 +27,6 @@ describe('Hello world processing', () => {
         message: 'world test !',
         delay: 1
       }
-    // @ts-ignore ProcessingTestConfig should be optional in lib-processing-dev
     }, config, false)
 
     await helloWorldPlugin.run(context)
@@ -55,7 +54,6 @@ describe('Hello world processing', () => {
       pluginConfig: { pluginMessage: 'Hello' },
       processingConfig: prepareRes.processingConfig,
       secrets: prepareRes.secrets,
-    // @ts-ignore ProcessingTestConfig should be optional in lib-processing-dev
     }, config, false)
 
     await helloWorldPlugin.run(context)

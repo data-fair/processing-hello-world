@@ -1,4 +1,4 @@
-# data-fair/processing-hello-world
+# <img alt="Data FAIR logo" src="https://cdn.jsdelivr.net/gh/data-fair/data-fair@master/ui/public/assets/logo.svg" width="30"> @data-fair/processing-hello-world
 
 Minimal reference plugin for [data-fair/processings](https://github.com/data-fair/processings). Designed to serve as a working example and a test bed for the processings platform.
 

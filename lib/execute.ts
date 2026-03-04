@@ -1,4 +1,4 @@
-import type { ProcessingContext } from '@data-fair/lib-common-types/processings.js'
+import type { RunFunction, ProcessingContext } from '@data-fair/lib-common-types/processings.js'
 import type { ProcessingConfig } from '#types/processingConfig/index.ts'
 
 /**
@@ -6,6 +6,41 @@ import type { ProcessingConfig } from '#types/processingConfig/index.ts'
  * This is set by the `stop` function, which is called when the processing is stopped.
  */
 let shouldBeStopped = false
+
+export const run: RunFunction<ProcessingConfig> = async (context) => {
+  const { processingConfig, log } = context
+  await log.step('Starting processing')
+  await log.info('Context (log in extra)', context)
+
+  if (processingConfig.delay) await applyDelay(context)
+  if (shouldBeStopped) return // If the processing should be stopped, we return early to stop it gracefully
+
+  // To test error handling in processings
+  if (processingConfig.throwError) {
+    throw new Error('Intentional error during processing execution')
+  }
+
+  await sendTestMail(context)
+  if (shouldBeStopped) return
+
+  let dataset
+  if (processingConfig.datasetMode === 'create') dataset = await createDataset(context)
+  else if (processingConfig.datasetMode === 'update') dataset = await checkDataset(context)
+  if (shouldBeStopped) return
+
+  await testLogProgress(context)
+  if (shouldBeStopped) return
+
+  await addLine(context, dataset.id)
+
+  if (processingConfig.deleteOnComplete) return { deleteOnComplete: true as const }
+}
+
+/**
+ * Sets `shouldBeStopped = true` to indicate that the processing should be stopped.
+ * The `run` function checks the `shouldBeStopped` variable to stop the processing gracefully.
+ */
+export const stop: () => Promise<void> = async () => { shouldBeStopped = true }
 
 /**
  * Utility function to test that the processing correctly handles interruption.
@@ -111,40 +146,3 @@ const addLine = async ({ pluginConfig, processingConfig, axios, log, ws }: Proce
   await log.info('1 data line written')
   await ws.waitForJournal(datasetId, 'finalize-end')
 }
-
-const run: (context: ProcessingContext<ProcessingConfig>) => Promise<void | { deleteOnComplete: true }> = async (context) => {
-  const { processingConfig, log } = context
-  await log.step('Starting processing')
-  await log.info('Context (log in extra)', context)
-
-  if (processingConfig.delay) await applyDelay(context)
-  if (shouldBeStopped) return // If the processing should be stopped, we return early to stop it gracefully
-
-  // To test error handling in processings
-  if (processingConfig.throwError) {
-    throw new Error('Intentional error during processing execution')
-  }
-
-  await sendTestMail(context)
-  if (shouldBeStopped) return
-
-  let dataset
-  if (processingConfig.datasetMode === 'create') dataset = await createDataset(context)
-  else if (processingConfig.datasetMode === 'update') dataset = await checkDataset(context)
-  if (shouldBeStopped) return
-
-  await testLogProgress(context)
-  if (shouldBeStopped) return
-
-  await addLine(context, dataset.id)
-
-  if (processingConfig.deleteOnComplete) return { deleteOnComplete: true as const }
-}
-
-/**
- * Sets `shouldBeStopped = true` to indicate that the processing should be stopped.
- * The `run` function checks the `shouldBeStopped` variable to stop the processing gracefully.
- */
-const stop: () => Promise<void> = async () => { shouldBeStopped = true }
-
-export { run, stop }
